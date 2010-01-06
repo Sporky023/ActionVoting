@@ -1,0 +1,48 @@
+This document is for me to record the initial idea before I start getting lost in coding, or even writing cucumber specs.
+
+The concept is this:
+
+Every period (a period is a week or a month or whatever), all members submit ideas to a list.
+
+They then vote on those ideas, casting a set number of votes (from 1 to 100 maybe).  
+
+The idea with the most votes at the end of the voting period gets chosen by the group.
+
+The whole group acts on that idea.
+
+In preparation for the next round of voting, the chosen idea gets a chunk of points removed.  All other ideas retain their votes.
+
+The cycle repeats.
+
+
+objects:
+
+Campaign
+	has_many :ideas
+	has_many :voting_periods
+
+Voting Period  # maybe also called a "Work Cycle"
+	belongs_to :campaign
+	has_many :votes
+	has_many :ideas, :through => :campaign
+
+Idea name:string description:string score:integer
+	belongs_to :campaign
+	has_many :voting_periods, :through => :campaign
+	has_many :votes
+	belongs_to? :user #?? not necessary to function
+	
+Vote
+	belongs_to :user
+	belongs_to :idea
+	belongs_to :voting_period
+	belongs_to :campaign, :through => :voting_period
+	
+User
+	has_many :votes
+	
+	def seniority_factor(amount_of_work_done)  # as user performs more work for organization, their seniority factor increases
+	def votes_per_voting_period(seniority_factor)  # as user's seniority increases, their votes per voting period increases
+	
+	
+
